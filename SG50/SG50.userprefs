@@ -1,0 +1,15 @@
+﻿<Properties GitUserInfo="UsingGIT">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone4s.8.0" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="SG50/FeedViewCell.cs">
+    <Files>
+      <File FileName="SG50/FeedTableViewController.cs" Line="35" Column="35" />
+      <File FileName="SG50/Main.cs" Line="1" Column="1" />
+      <File FileName="SG50/API/APITask.cs" Line="3" Column="3" />
+      <File FileName="SG50/FeedViewCell.cs" Line="19" Column="19" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
