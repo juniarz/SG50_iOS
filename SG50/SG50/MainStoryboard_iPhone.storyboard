@@ -7,20 +7,22 @@
         <!--Root Navigation Controller-->
         <scene sceneID="327">
             <objects>
-                <navigationController definesPresentationContext="YES" id="328" customClass="RootNavigationController" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="331">
+                <navigationController definesPresentationContext="YES" id="328" customClass="RootNavigationController" sceneMemberID="viewController" hidesBottomBarWhenPushed="NO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="331" translucent="NO">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" colorSpace="calibratedRGB" red="1" green="0" blue="0" alpha="1"/>
                         </textAttributes>
+                        <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                     </navigationBar>
                     <connections>
                         <segue destination="340" kind="relationship" relationship="rootViewController" id="349"/>
                     </connections>
+                    <keyCommands/>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="332" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-88" y="11"/>
+            <point key="canvasLocation" x="-118" y="336"/>
         </scene>
         <!--Title-->
         <scene sceneID="339">
@@ -36,6 +38,8 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="SG50 Youth!" id="348"/>
+                    <connections>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="346" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -49,5 +53,6 @@
     </simulatedMetricsContainer>
     <resources>
         <image name="Default-568h.png" width="640" height="1136"/>
+        <image name="sg50_logo.png" width="60" height="75"/>
     </resources>
 </document>

@@ -47,12 +47,12 @@ namespace SG50
 			ret.AddSubview (ret.moviePlayer.View);
 
 			NSUrlRequest req = NSUrlRequest.FromUrl (new NSUrl (data ["video"] ["cover"].ToString ()));
-			NSUrlConnection.SendAsynchronousRequest(req, NSOperationQueue.MainQueue, delegate(NSUrlResponse response, NSData _data, NSError error) {
+			NSUrlConnection.SendAsynchronousRequest (req, NSOperationQueue.MainQueue, delegate(NSUrlResponse response, NSData _data, NSError error) {
 				if (error != null) {
 					return;
 				}
 
-				ret.InvokeOnMainThread(() => {
+				ret.InvokeOnMainThread (() => {
 					ret.coverImageView.Image = new UIImage (_data);
 				});
 			});
@@ -66,7 +66,8 @@ namespace SG50
 			return ret;
 		}
 
-		public void Update(JToken data) {
+		public void Update (JToken data)
+		{
 			this.data = data;
 
 			titleLbl.Text = data ["title"].ToString ();
@@ -78,9 +79,9 @@ namespace SG50
 			bool liked = Convert.ToBoolean (data ["liked"].ToString ());
 
 			if (liked) {
-				likeBtn.TitleLabel.TextColor = UIColor.FromRGB ((float) 255, (float) 153, (float) 204);
+				likeBtn.TitleLabel.TextColor = UIColor.FromRGB ((float)255, (float)153, (float)204);
 			} else {
-				likeBtn.TitleLabel.TextColor = UIColor.FromRGB ((float) 224, (float) 224, (float) 224);
+				likeBtn.TitleLabel.TextColor = UIColor.FromRGB ((float)224, (float)224, (float)224);
 			}
 		}
 
@@ -106,24 +107,26 @@ namespace SG50
 			Flag ();
 		}
 
-		void PlayVideo() {
+		void PlayVideo ()
+		{
 			coverImageView.Hidden = true;
 			playBtn.Hidden = true;
 			moviePlayer.View.Hidden = false;
-			moviePlayer.Play();
+			moviePlayer.Play ();
 
 			NSNotificationCenter.DefaultCenter.AddObserver ("MPMoviePlayerPlaybackDidFinishNotification", delegate(NSNotification obj) {
-				InvokeOnMainThread(() => {
+				InvokeOnMainThread (() => {
 					moviePlayer.Fullscreen = false;
 					moviePlayer.View.Hidden = true;
 					playBtn.Hidden = false;
 					coverImageView.Hidden = false;
 				});
-				obj.Dispose();
+				obj.Dispose ();
 			});
 		}
 
-		void UpdateLikesAndLiked(bool isLike) {
+		void UpdateLikesAndLiked (bool isLike)
+		{
 			InvokeOnMainThread (() => {
 				data ["likes"] = Convert.ToInt32 (data ["likes"].ToString ()) - (isLike ? -1 : 1);
 				data ["liked"] = isLike;
@@ -131,73 +134,66 @@ namespace SG50
 			});
 		}
 
-		async void Like() {
-
+		void Like ()
+		{
 			UpdateLikesAndLiked (true);
 
-			APITask task = new APITask ("feed/" + data["present_id"] + "/like");
+			APITask task = new APITask ("feed/" + data ["present_id"] + "/like");
 			APIArgs args = new APIArgs ();
-			args.Parameters.Add (NSObject.FromObject ("accesstoken"), NSObject.FromObject ("acdcb58208f767fc204f36ecd74afc30"));
 
-			try {
-				IRestResponse response = await task.CallAsync (args);
+			task.CallAsync (args, (response) => {
 				if (response.StatusCode != System.Net.HttpStatusCode.NoContent) {
 					UIAlertView alert = new UIAlertView ("Oops!", "Failed to like, please try again!", null, "Ok", null);
 					alert.Show ();
 					UpdateLikesAndLiked (false);
 				}
-			} catch (Exception ex) {
-				UIAlertView alert = new UIAlertView ("An error has occured...", ex.Message, null, "Ok", null);
+			}, (response) => {
+				UIAlertView alert = new UIAlertView ("An error has occured...", response.ErrorMessage, null, "Ok", null);
 				alert.Show ();
 				UpdateLikesAndLiked (false);
-			}
+			});
 		}
 
-		async void Unlike() {
-
+		void Unlike ()
+		{
 			UpdateLikesAndLiked (false);
 
-			APITask task = new APITask ("feed/" + data["present_id"] + "/unlike");
+			APITask task = new APITask ("feed/" + data ["present_id"] + "/unlike");
 			APIArgs args = new APIArgs ();
-			args.Parameters.Add (NSObject.FromObject ("accesstoken"), NSObject.FromObject ("acdcb58208f767fc204f36ecd74afc30"));
 
-			try {
-				IRestResponse response = await task.CallAsync (args);
+			task.CallAsync (args, (response) => {
 				if (response.StatusCode != System.Net.HttpStatusCode.NoContent) {
 					UIAlertView alert = new UIAlertView ("Oops!", "Failed to unlike, please try again!", null, "Ok", null);
 					alert.Show ();
 					UpdateLikesAndLiked (true);
 				}
-			} catch (Exception ex) {
-				UIAlertView alert = new UIAlertView ("An error has occured...", ex.Message, null, "Ok", null);
+			}, (response) => {
+				UIAlertView alert = new UIAlertView ("An error has occured...", response.ErrorMessage, null, "Ok", null);
 				alert.Show ();
 				UpdateLikesAndLiked (true);
-			}
+			});
 		}
 
-		void Flag() {
-
+		void Flag ()
+		{
 			UIAlertView prompt = new UIAlertView ("Are you sure?", "Flag as inappropriate?", null, "No", new String[] { "Yes" });
-			prompt.Clicked += async (object sender, UIButtonEventArgs e) => {
+			prompt.Clicked += (object sender, UIButtonEventArgs e) => {
 
 				if (e.ButtonIndex == 1) {
-					APITask task = new APITask ("feed/" + data["present_id"] + "/flag");
+					APITask task = new APITask ("feed/" + data ["present_id"] + "/flag");
 					APIArgs args = new APIArgs ();
-					args.Parameters.Add (NSObject.FromObject ("accesstoken"), NSObject.FromObject ("acdcb58208f767fc204f36ecd74afc30"));
 
-					try {
-						IRestResponse response = await task.CallAsync (args);
+					task.CallAsync (args, (response) => {
 						if (response.StatusCode != System.Net.HttpStatusCode.NoContent) {
 							UIAlertView alert = new UIAlertView ("Oops!", "Failed to flag, please try again!", null, "Ok", null);
 							alert.Show ();
 						}
-					} catch (Exception ex) {
-						UIAlertView alert = new UIAlertView ("An error has occured...", ex.Message, null, "Ok", null);
+					}, (response) => {
+						UIAlertView alert = new UIAlertView ("An error has occured...", response.ErrorMessage, null, "Ok", null);
 						alert.Show ();
 						UpdateLikesAndLiked (true);
-					}
+					});
 				}
-
 			};
 			prompt.Show ();
 		}

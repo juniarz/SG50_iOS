@@ -4,6 +4,7 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
+
 namespace SG50
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the
@@ -12,6 +13,17 @@ namespace SG50
     [Register("AppDelegate")]
     public partial class AppDelegate : UIApplicationDelegate
     {
+
+		public AppDelegate() {
+		}
+
+		public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+		{
+//			PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+//			[currentInstallation setDeviceTokenFromData:deviceToken];
+//			[currentInstallation saveInBackground];
+		}
+
         // class-level declarations
         public override UIWindow Window
         {

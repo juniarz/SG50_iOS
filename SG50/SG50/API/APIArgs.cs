@@ -8,6 +8,7 @@ namespace SG50
         public static APIArgs Empty = new APIArgs();
 
         public NSMutableDictionary Headers = new NSMutableDictionary();
-        public NSMutableDictionary Parameters = new NSMutableDictionary();
+		public NSMutableDictionary Parameters = new NSMutableDictionary();
+		public NSMutableDictionary Files = new NSMutableDictionary();
     }
 }

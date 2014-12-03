@@ -9,96 +9,68 @@ using RestSharp;
 
 namespace SG50
 {
-    class APITask
-    {
-        public String API = "";
-        public static String API_TEMPLATE = "http://sg50-private-api.herokuapp.com/api/";
+	class APITask
+	{
+		public String API = "";
+		public static String API_TEMPLATE = "http://sg50-private-api.herokuapp.com";
+		public delegate void SuccessDelegate (IRestResponse response);
+		public delegate void ErrorDelegate (IRestResponse response);
 
-        public APITask(String API)
-        {
-            this.API = API;
-        }
+		public APITask (String API)
+		{
+			this.API = API;
+		}
 
-        public class APIEventHandlerArgs : EventArgs
-        {
-            public String ErrorMessage = "";
-            public String Result = "";
-        }
+		public IRestResponse Call (APIArgs args, Method method = Method.POST)
+		{
+			var client = new RestClient (API_TEMPLATE);
+			return client.Execute (GetRequest (args, method));
+		}
 
-        public delegate void APIEventHandler(object sender, APIEventHandlerArgs e);
-        public event APIEventHandler OnErrorEventHandler;
-        public event APIEventHandler OnSuccessEventHandler;
+		public void CallAsync (APIArgs args, SuccessDelegate OnSuccess, ErrorDelegate OnError, Method method = Method.POST)
+		{
+			var client = new RestClient (API_TEMPLATE);
+			var request = GetRequest (args, method);
+			client.ExecuteAsync (request, response => {
+				if (response.ErrorException != null) {
+					if (OnError != null) {
+						OnError (response);
+					}
+				} else {
+					if (OnSuccess != null) {
+						OnSuccess(response);
+					}
+				}
+			});
+		}
 
-        protected void OnError(object sender, APIEventHandlerArgs e)
-        {
-            if (OnErrorEventHandler != null)
-            {
-                // Call the Event
-                OnErrorEventHandler(this, e);
-            }
-        }
+		private RestRequest GetRequest(APIArgs args, Method method)
+		{
+			var request = new RestRequest(API, method);
 
-        protected void OnSuccess(object sender, APIEventHandlerArgs e)
-        {
-            if (OnSuccessEventHandler != null)
-            {
-                // Call the Event
-                OnSuccessEventHandler(this, e);
-            }
-        }
+			foreach (NSString key in args.Headers.Keys)
+			{
+				request.AddHeader(key, args.Headers[key].ToString());
+			}
 
-        public void Call(APIArgs args)
-        {
-            var client = new RestClient(API_TEMPLATE);
+			if (true)
+			{
+				request.AddHeader("X-Accesstoken", "7127709e3d0c4f16f3009a71dce62d0a");
+			}
 
-            var request = GetRequest(args);
+			request.AddParameter("key", Guid.NewGuid().ToString().Replace("-", ""), ParameterType.QueryString);
 
-            client.ExecuteAsync(request, response =>
-            {
-                if (response.StatusCode == HttpStatusCode.NotFound)
-                {
-                    OnError(this, new APIEventHandlerArgs { ErrorMessage = response.Content });
-                }
-                else
-                {
-                    OnSuccess(this, new APIEventHandlerArgs { Result = response.Content });
-                }
-            });
-        }
+			foreach (NSString key in args.Parameters.Keys)
+			{
+				request.AddParameter(key, args.Parameters[key], ParameterType.GetOrPost);
+			}
 
-        public Task<IRestResponse> CallAsync(APIArgs args)
-        {
-            var client = new RestClient(API_TEMPLATE);
+			foreach (NSString key in args.Files.Keys)
+			{
+				request.AddFile(key, args.Files[key].ToString());
+			}
 
-            var request = GetRequest(args);
-
-            var tcs = new TaskCompletionSource<IRestResponse>();
-            client.ExecuteAsync(request, response =>
-            {
-                if (response.ErrorException != null)
-                    tcs.TrySetException(response.ErrorException);
-                else
-                    tcs.TrySetResult(response);
-            });
-
-            return tcs.Task;
-        }
-
-        private RestRequest GetRequest(APIArgs args)
-        {
-            var request = new RestRequest(String.Format("{0}/?{1}", API, Guid.NewGuid().ToString().Replace("-", "")), Method.POST);
-
-            foreach (NSString key in args.Headers.Keys)
-            {
-                request.AddHeader(key, args.Headers.ValueForKey(key).ToString());
-            }
-
-            foreach (NSString key in args.Parameters.Keys)
-            {
-                request.AddParameter(key, args.Parameters.ValueForKey(key));
-            }
-
-            return request;
-        }
-    }
+			return request;
+		}
+	}
 }

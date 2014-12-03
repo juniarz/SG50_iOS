@@ -1,15 +1,16 @@
 ﻿<Properties GitUserInfo="UsingGIT">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone4s.8.0" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SG50/FeedViewCell.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhone4s.8.1" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="SG50/API/PushNotification.cs">
     <Files>
-      <File FileName="SG50/FeedTableViewController.cs" Line="35" Column="35" />
-      <File FileName="SG50/Main.cs" Line="1" Column="1" />
-      <File FileName="SG50/API/APITask.cs" Line="3" Column="3" />
-      <File FileName="SG50/FeedViewCell.cs" Line="19" Column="19" />
+      <File FileName="SG50/AppDelegate.cs" Line="1" Column="1" />
+      <File FileName="SG50/API/PushNotification.cs" Line="2" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.SG50>
+    <IPhoneTestFlightSettings_27CAd-Hoc ApiToken="8091d0de0755117741fefd3de3699590_MjIxNzU1NzIwMTQtMTEtMDYgMDg6MDk6MDEuODQ4NDE4" TeamToken="71e57bb913a5b3a7aa2b5ad7bad564fc_NDU3MzMwMjAxNC0xMS0wNiAxMDoyNDo1MS41NTQyNTE" ReleaseNotes="Test!" NotifyTeamMembers="False" ReplaceBinaries="False" DistributionLists="" UploadDSYMs="False" />
+  </MonoDevelop.Ide.ItemProperties.SG50>
 </Properties>
